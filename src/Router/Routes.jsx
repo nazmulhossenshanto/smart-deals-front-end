@@ -3,6 +3,7 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import AllProducts from "../components/AllProducts/AllProducts";
 
 export const router = createBrowserRouter([
     {
@@ -23,7 +24,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/allProducts', 
-                element: <h1>all product</h1>
+                loader: ()=> fetch('http://localhost:3000/products').then(res=>res.json()),
+                element: <AllProducts></AllProducts>
             },
             {
                 path: '/myProducts', 

@@ -5,7 +5,7 @@ import { Link } from "react-router";
  
 const LatestProducts = ({latestProductsPromise}) => {
   const latestProduct = use(latestProductsPromise);
-  console.log(latestProduct);
+  // console.log(latestProduct);
   return (
     <div className="max-w-11/12 mx-auto my-10">
       <h1 className="text-center text-2xl font-bold my-5">Recent <span className="text-primary">Products</span></h1>
