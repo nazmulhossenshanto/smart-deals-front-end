@@ -1,0 +1,31 @@
+import { Link } from "react-router";
+
+const Product = ({ product }) => {
+  const { title, usage, price_min, price_max, image } = product;
+  return (
+    <div className="card bg-base-100 w-96 shadow-lg space-y-3 hover:scale-105 px-2 py-4">
+      <figure>
+        <img
+          className="h-60 w-full object-cover rounded-lg  "
+          src={image}
+          alt="Shoes"
+        />
+      </figure>
+      <div className=" flex flex-col min-h-36.25  p-0">
+        <h2 className="text-xl font-semibold">
+          {title} [ {usage} ]
+        </h2>
+        <p className="text-primary font-semibold">
+          $ {price_min} - {price_max}
+        </p>
+        <div className=" mt-auto ">
+          <Link to='/allProducts' className=" w-full btn btn-outline border-primary text-primary hover:bg-primary/80 hover:text-white">
+            View Details
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Product;
