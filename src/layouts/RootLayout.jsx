@@ -8,7 +8,7 @@ const RootLayout = () => {
         <header>
             <Navbar></Navbar>
         </header>
-        <section className="w-11/12 mx-auto">
+        <section >
           <Outlet></Outlet>
         </section>
     </div>
