@@ -30,12 +30,16 @@ export const router = createBrowserRouter([
                 element: <h1>my Product</h1>
             },
             {
-                path: '/myBids', 
-                element: <h1>my Bids</h1>
+                path: '/productDetails/:id',
+                element: <h1>product details</h1>
             },
             {
                 path: '/createProduct', 
                 element: <h1>create Product</h1>
+            },
+            {
+                path: '/myBids', 
+                element: <h1>my Bids</h1>
             }, 
         ]
     }

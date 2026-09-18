@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 const Product = ({ product }) => {
-  const { title, usage, price_min, price_max, image } = product;
+  const { _id, title, usage, price_min, price_max, image } = product;
   return (
     <div className="card bg-base-100 w-96 shadow-lg space-y-3 hover:scale-105 px-2 py-4">
       <figure>
@@ -19,7 +19,7 @@ const Product = ({ product }) => {
           $ {price_min} - {price_max}
         </p>
         <div className=" mt-auto ">
-          <Link to='/allProducts' className=" w-full btn btn-outline border-primary text-primary hover:bg-primary/80 hover:text-white">
+          <Link to={`/productDetails/${_id}`} className=" w-full btn btn-outline border-primary text-primary hover:bg-primary/80 hover:text-white">
             View Details
           </Link>
         </div>

@@ -1,5 +1,6 @@
 import { use } from "react";
 import Product from "../Product/Product";
+import { Link } from "react-router";
 
  
 const LatestProducts = ({latestProductsPromise}) => {
@@ -12,6 +13,10 @@ const LatestProducts = ({latestProductsPromise}) => {
         {
           latestProduct.map(product=><Product key={product._id} product={product}></Product>)
         }
+      </div>
+      <div className="text-center my-5">
+
+      <Link to='/allProducts' className="btn bg-primary text-white">All Products</Link>
       </div>
     </div>
   )
