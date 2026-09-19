@@ -1,6 +1,9 @@
+import { use } from "react";
 import { Link, NavLink } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
+  const {user} = use(AuthContext);
   const links = (
     <>
       <li>
@@ -9,15 +12,19 @@ const Navbar = () => {
       <li>
         <NavLink to='/allProducts'>All Products</NavLink>
       </li> 
-      <li>
+      {user && <li>
         <NavLink to='/myProducts'>My Product</NavLink>
-      </li> 
-      <li>
+      </li>} 
+      {
+        user && <li>
         <NavLink to='/myBids'>My Bids</NavLink>
-      </li> 
-      <li>
+      </li>
+      } 
+      {
+        user && <li>
         <NavLink to='/createProduct'>Create Product</NavLink>
-      </li> 
+      </li>
+      } 
     </>
   );
   return (

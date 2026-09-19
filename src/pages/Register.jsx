@@ -1,19 +1,56 @@
+import { use } from "react"
+import { AuthContext } from "../context/AuthContext"
+
  
 const Register = () => {
+  const {createUser} = use(AuthContext);
+   const handleRegister = (e)=>{
+    e.preventDefault(); 
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    createUser(email, password)
+    .then(result =>{
+      const firebaseUser = result.user;
+      console.log(firebaseUser);
+      const userInfo = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName,
+        photoURL: firebaseUser.photoURL,
+        role : 'buyer',
+        createdAt : new Date()
+      };
+      // crate user into mongo db
+      return fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'content-type' : 'application/json'
+        },
+        body: JSON.stringify(userInfo)
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log( 'mongo db user : ', data);
+      })
+    })
+    .catch(error=>{
+      console.log( 'register user error',error);
+    })
+   }
   return (
     <div className="mt-20">
       <div className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl">
         <h1 className="text-3xl font-bold text-center mt-5">Register Now!</h1>
         <div className="card-body">
-          <form className="fieldset">
+          <form onSubmit={handleRegister} className="fieldset">
             <label className="label">Email</label>
-            <input type="email" className="input" placeholder="Email" />
+            <input name="email" type="email" className="input" placeholder="Email" required />
             <label className="label">Password</label>
-            <input type="password" className="input" placeholder="Password" />
+            <input name="password" type="password" className="input" placeholder="Password" required/>
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
-            <button className="btn btn-neutral mt-4">Login</button>
+            <button className="btn btn-neutral mt-4">Register</button>
           </form>
           <div className="divider">Or</div>
           {/* Google */}

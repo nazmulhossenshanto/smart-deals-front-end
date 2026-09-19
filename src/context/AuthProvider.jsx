@@ -5,8 +5,8 @@ import { auth } from "../firebase/firebase.init";
 
  const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({children}) => {
-    const [user, setUser] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // create user with email password
     const createUser = (email, password)=>{
@@ -26,7 +26,7 @@ const AuthProvider = ({children}) => {
     }
     // sign out an user 
     const signOutUser = ()=>{
-        setLoading(false);
+        setLoading(true);
         return signOut(auth)
     }
     // onAuthState changed
