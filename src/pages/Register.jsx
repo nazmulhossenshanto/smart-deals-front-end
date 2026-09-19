@@ -3,13 +3,11 @@ import { AuthContext } from "../context/AuthContext"
 
  
 const Register = () => {
-  const {createUser} = use(AuthContext);
-   const handleRegister = (e)=>{
-    e.preventDefault(); 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    createUser(email, password)
-    .then(result =>{
+  const {createUser, signInWithGoogle} = use(AuthContext);
+  const handleGoogleSignIn = () =>{
+
+    signInWithGoogle()
+    .then(async (result) =>{
       const firebaseUser = result.user;
       console.log(firebaseUser);
       const userInfo = {
@@ -21,17 +19,48 @@ const Register = () => {
         createdAt : new Date()
       };
       // crate user into mongo db
-      return fetch('http://localhost:3000/users', {
+      const res = await fetch('http://localhost:3000/users', {
         method: 'POST',
         headers: {
-          'content-type' : 'application/json'
+          'content-type': 'application/json'
         },
         body: JSON.stringify(userInfo)
-      })
-      .then(res=>res.json())
-      .then(data=>{
-        console.log( 'mongo db user : ', data);
-      })
+      });
+      const mongoDBUser = await res.json();
+      console.log('mongo db user : ', mongoDBUser);
+    })
+    .catch(error=>{
+      console.log( 'google register user error',error);
+    })
+
+    
+  }
+   const handleRegister = async(e)=>{
+    e.preventDefault(); 
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    createUser(email, password)
+    .then(async (result) =>{
+      const firebaseUser = result.user;
+      console.log(firebaseUser);
+      const userInfo = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName,
+        photoURL: firebaseUser.photoURL,
+        role : 'buyer',
+        createdAt : new Date()
+      };
+      // crate user into mongo db
+      const res = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(userInfo)
+      });
+      const mongoDBUser = await res.json();
+      console.log('mongo db user : ', mongoDBUser);
     })
     .catch(error=>{
       console.log( 'register user error',error);
@@ -54,7 +83,7 @@ const Register = () => {
           </form>
           <div className="divider">Or</div>
           {/* Google */}
-          <button className="btn bg-white text-black border-[#e5e5e5]">
+          <button onClick={handleGoogleSignIn} className="btn bg-white text-black border-[#e5e5e5]">
             <svg
               aria-label="Google logo"
               width="16"
