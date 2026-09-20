@@ -22,9 +22,30 @@ const ProductDetails = () => {
     seller_name,
     status,
   } = product;
-  const handleBidSubmit = (e) => {
+  const handleBidSubmit = async(e) => {
     e.preventDefault();
-    console.log("bid submited");
+    const name = user.displayName;
+    const email = user.email;
+    const price = e.target.price.value;
+    const contactInfo = e.target.contact.value;
+    const newBid = {
+      product: _id,
+      buyer_name: name,
+      buyer_email: email,
+      bid_price: price,
+      contact_info: contactInfo,
+      status: 'pending'
+    };
+    const res = await fetch('http://localhost:3000/bids',{
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(newBid)
+    });
+    const data =  await res.json();
+    console.log('after place a bid', data);
+    
     bidModalRef.current.close();
   };
   return (
@@ -179,11 +200,11 @@ const ProductDetails = () => {
                     <label className="label text-black font-semibold">
                       Place Your Price
                     </label>
-                    <input type="text" className="input" placeholder="price" />
+                    <input name="price" type="text" className="input" placeholder="price" />
                     <label className="label text-black font-semibold">
                       Contact Info
                     </label>
-                    <input
+                    <input name="contact"
                       type="text"
                       className="input"
                       placeholder="Your info"
