@@ -1,9 +1,10 @@
 import { use, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import Swal from "sweetalert2";
 
 const MyBids = () => {
   const { user } = use(AuthContext);
-  const [bids, setBids] = useState([]);
+  const [bids, setBids] = useState([]); 
   useEffect(() => {
     if (user?.email) {
       fetch(`http://localhost:3000/bids?email=${user?.email}`)
@@ -14,6 +15,44 @@ const MyBids = () => {
         });
     }
   }, [user?.email]);
+  const handleRemoveBid = (id)=>{
+    Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed){
+    fetch(`http://localhost:3000/bids/${id}`,{
+      method: 'DELETE'
+    })
+    .then(res=> res.json())
+    .then(data => {
+      console.log('bid after delete', data);
+      setBids((prevBids)=>prevBids.filter(bid=> bid._id !== id))
+      // show alert
+         Swal.fire({
+    title: "Deleted!",
+    text: "Your bid has been deleted.",
+    icon: "success"
+  });
+  
+    })
+    .catch(error =>{
+      console.log('delete bid error', error);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete the bid. Please try again.",
+        icon: "error"
+      })
+    })
+  }
+  
+});
+  }
   return (
     <div>
       <h1 className="my-10 text-center text-4xl font-bold">
@@ -30,8 +69,8 @@ const MyBids = () => {
         <th>Buyer Name</th>
         <th>Buyer Email</th>
         <th>Bid Price</th>
+        <th>Status</th>
         <th>Actions</th>
-        <th></th>
       </tr>
     </thead>
     <tbody >
@@ -51,10 +90,12 @@ const MyBids = () => {
           {bid?.buyer_email} 
         </td>
         <td>$ {bid.bid_price}</td>
-        <td className="bg-yellow-400 btn btn-xs rounded-full">{bid.status}</td>
+        <td  > <span className="badge badge-warning badge-sm rounded-full">
+    {bid.status}
+  </span></td>
         <th >
-         <div className="flex gap-2">
-           <button className="btn  btn-outline btn-warning btn-xs">Remove Bid</button>
+         <div >
+           <button onClick={()=>handleRemoveBid(bid._id)} className="btn  btn-outline btn-warning btn-xs">Remove Bid</button>
          </div>
         </th>
       </tr>)
