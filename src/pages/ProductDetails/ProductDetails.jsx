@@ -2,6 +2,7 @@ import { use, useEffect, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import { ArrowLeft } from "lucide-react";
+import Swal from "sweetalert2";
 
 const ProductDetails = () => {
   const [bids, setBids] = useState([]);
@@ -51,9 +52,23 @@ const ProductDetails = () => {
       body: JSON.stringify(newBid),
     });
     const data = await res.json();
-    console.log("after place a bid", data);
+    if(data.inserteId){
+      bidModalRef.current.close();
+      // sweet alert
+      Swal.fire({
+  title: "Sweet!",
+  text: "Modal with a custom image.",
+  imageUrl: "https://unsplash.it/400/200",
+  imageWidth: 400,
+  imageHeight: 200,
+  imageAlt: "Custom image"
+});
+newBid._id = data.inserteId;
+const newBids = [...bids, newBid];
+setBids(newBids)
+    }
 
-    bidModalRef.current.close();
+    
   };
 
   // fetch bids for this product
