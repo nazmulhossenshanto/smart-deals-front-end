@@ -32,12 +32,13 @@ const ProductDetails = () => {
     e.preventDefault();
     const name = user.displayName;
     const email = user.email;
-    const price = e.target.price.value;
+    const price = Number(e.target.price.value);
     const contactInfo = e.target.contact.value;
     const newBid = {
       product: _id,
       buyer_name: name,
       buyer_email: email,
+      buyer_image: user?.photoURL,
       bid_price: price,
       contact_info: contactInfo,
       status: "pending",
@@ -97,7 +98,15 @@ const ProductDetails = () => {
         <div className="flex-1 space-y-5">
           {/* Product Title + Category */}
           <div>
-            <button><ArrowLeft /> <Link to='/allProducts'> Back To Products</Link></button>
+            <div>
+              <Link
+                to="/allProducts"
+                className="flex items-center gap-2 w-fit text-sm"
+              >
+                <ArrowLeft size={18} />
+                <span>Back To Products</span>
+              </Link>
+            </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
               {title}
             </h1>
@@ -265,6 +274,53 @@ const ProductDetails = () => {
           Bids For This Product:{" "}
           <span className="text-primary">{bids.length}</span>
         </h1>
+        {/* bids for this product */}
+
+      <div className="overflow-x-auto">
+  <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th>
+          SL No.
+        </th>
+        <th>Buyer Name</th>
+        <th>Buyer Email</th>
+        <th>Bid Price</th>
+        <th>Actions</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* row 1 */}
+      {
+        bids.map((bid, index)=><tr key={bid._id}>
+        <th>
+          {index + 1}
+        </th>
+        <td>
+          <div className="flex items-center  gap-3">
+            <img className="h-10 w-10 rounded-full object-cover" src={bid?.buyer_image} alt="" />
+            <h1>{bid.buyer_name}</h1>
+          </div>
+        </td>
+        <td>
+          {bid?.buyer_email} 
+        </td>
+        <td>$ {bid.bid_price}</td>
+        <th >
+         <div className="flex gap-2">
+           <button className="btn  btn-outline btn-success btn-xs">Accept Offer</button>
+          <button className="btn  btn-outline btn-warning btn-xs">Reject Offer</button>
+         </div>
+        </th>
+      </tr>)
+      }
+    </tbody> 
+  </table>
+</div>
+
+
       </div>
     </div>
   );
