@@ -52,21 +52,23 @@ const ProductDetails = () => {
       body: JSON.stringify(newBid),
     });
     const data = await res.json();
-    if(data.inserteId){
+    if(data.insertedId){
       bidModalRef.current.close();
       // sweet alert
       Swal.fire({
-  title: "Sweet!",
-  text: "Modal with a custom image.",
-  imageUrl: "https://unsplash.it/400/200",
+  title: "Successed!",
+  text: "Your bid has been placed.",
+  imageUrl: user?.photoURL,
   imageWidth: 400,
   imageHeight: 200,
-  imageAlt: "Custom image"
+  imageAlt: user.displayName
 });
 newBid._id = data.inserteId;
 const newBids = [...bids, newBid];
+newBids.sort((a, b)=> a.bid_price - b.bid_price)
 setBids(newBids)
     }
+    console.log(data);
 
     
   };
