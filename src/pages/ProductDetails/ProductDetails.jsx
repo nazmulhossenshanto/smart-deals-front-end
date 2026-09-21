@@ -1,15 +1,21 @@
-import { use, useRef } from "react";
-import { useLoaderData } from "react-router";
+import { use, useEffect, useRef, useState } from "react";
+import { Link, useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
+import { ArrowLeft } from "lucide-react";
 
 const ProductDetails = () => {
+  const [bids, setBids] = useState([]);
   const { user } = use(AuthContext);
   const bidModalRef = useRef(null);
   const handleModal = () => {
     bidModalRef.current.showModal();
   };
   const product = useLoaderData();
-  const {image, condition, usage, description,
+  const {
+    image,
+    condition,
+    usage,
+    description,
     title,
     price_min,
     price_max,
@@ -22,7 +28,7 @@ const ProductDetails = () => {
     seller_name,
     status,
   } = product;
-  const handleBidSubmit = async(e) => {
+  const handleBidSubmit = async (e) => {
     e.preventDefault();
     const name = user.displayName;
     const email = user.email;
@@ -34,29 +40,43 @@ const ProductDetails = () => {
       buyer_email: email,
       bid_price: price,
       contact_info: contactInfo,
-      status: 'pending'
+      status: "pending",
     };
-    const res = await fetch('http://localhost:3000/bids',{
-      method: 'POST',
+    const res = await fetch("http://localhost:3000/bids", {
+      method: "POST",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
       },
-      body: JSON.stringify(newBid)
+      body: JSON.stringify(newBid),
     });
-    const data =  await res.json();
-    console.log('after place a bid', data);
-    
+    const data = await res.json();
+    console.log("after place a bid", data);
+
     bidModalRef.current.close();
   };
+
+  // fetch bids for this product
+  useEffect(() => {
+    fetch(`http://localhost:3000/products/bids/${_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setBids(data);
+      });
+  }, [_id]);
   return (
-    <div className="max-w-11/12 mx-auto my-10">
+    <div className="w-11/12 max-w-6xl mx-auto my-6 md:my-10">
       {/* product info */}
       <div className="flex flex-col md:flex-row justify-between gap-5">
         {/* Left Content */}
         <div className="flex-1">
           {/* image div */}
-          <div>
-            <img className="rounded-lg object-cover" src={image} alt="" />
+          <div className="w-full">
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-60 sm:h-64 md:h-80 lg:h-150 object-cover rounded-lg"
+            />
           </div>
           {/* content div */}
           <div>
@@ -77,6 +97,7 @@ const ProductDetails = () => {
         <div className="flex-1 space-y-5">
           {/* Product Title + Category */}
           <div>
+            <button><ArrowLeft /> <Link to='/allProducts'> Back To Products</Link></button>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
               {title}
             </h1>
@@ -181,7 +202,7 @@ const ProductDetails = () => {
                           type="text"
                           className="input"
                           readOnly
-                          defaultValue={user.displayName}
+                          defaultValue={user?.displayName}
                           placeholder="Your name"
                         />
                       </div>
@@ -192,7 +213,7 @@ const ProductDetails = () => {
                         <input
                           type="text"
                           className="input"
-                          defaultValue={user.email}
+                          defaultValue={user?.email}
                           placeholder="buyer email"
                         />
                       </div>
@@ -200,21 +221,34 @@ const ProductDetails = () => {
                     <label className="label text-black font-semibold">
                       Place Your Price
                     </label>
-                    <input name="price" type="text" className="input" placeholder="price" />
+                    <input
+                      name="price"
+                      type="text"
+                      className="input"
+                      placeholder="price"
+                    />
                     <label className="label text-black font-semibold">
                       Contact Info
                     </label>
-                    <input name="contact"
+                    <input
+                      name="contact"
                       type="text"
                       className="input"
                       placeholder="Your info"
                     />
                   </fieldset>
                   <div className="flex justify-end gap-5">
-                    <button className="btn btn-outline border-primary text-white bg-primary mt-4">
+                    <button
+                      type="button"
+                      onClick={() => bidModalRef.current.close()}
+                      className="btn btn-outline border-primary text-white bg-primary mt-4"
+                    >
                       Cancel
                     </button>
-                    <button className="btn btn-outline border-primary text-white bg-primary mt-4">
+                    <button
+                      type="submit"
+                      className="btn btn-outline border-primary text-white bg-primary mt-4"
+                    >
                       Submit Bid
                     </button>
                   </div>
@@ -226,6 +260,12 @@ const ProductDetails = () => {
         </div>
       </div>
       {/* bids for this product */}
+      <div>
+        <h1 className="text-2xl font-bold mt-10">
+          Bids For This Product:{" "}
+          <span className="text-primary">{bids.length}</span>
+        </h1>
+      </div>
     </div>
   );
 };
