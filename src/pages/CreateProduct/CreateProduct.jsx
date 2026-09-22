@@ -1,35 +1,84 @@
+import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router";
+import Swal from "sweetalert2";
+
 const CreateProduct = () => {
-  const handleCreateProduct = (e) => {
-    e.preventDefault();
+ const handleCreateProduct = (e) => {
+  e.preventDefault();
 
-    const form = e.target;
+  const form = e.target;
 
-    const productInfo = {
-      title: form.title.value,
-      category: form.category.value,
-      price_min: Number(form.price_min.value),
-      price_max: Number(form.price_max.value),
-      condition: form.condition.value,
-      usage: form.usage.value,
-      image: form.image.value,
-      seller_name: form.seller_name.value,
-      seller_email: form.seller_email.value,
-      seller_contact: form.seller_contact.value,
-      seller_image: form.seller_image.value,
-      location: form.location.value,
-      description: form.description.value,
-    };
-
-    console.log(productInfo);
+  const productInfo = {
+    title: form.title.value,
+    category: form.category.value,
+    price_min: Number(form.price_min.value),
+    price_max: Number(form.price_max.value),
+    condition: form.condition.value,
+    usage: form.usage.value,
+    image: form.image.value,
+    seller_name: form.seller_name.value,
+    seller_email: form.seller_email.value,
+    seller_contact: form.seller_contact.value,
+    seller_image: form.seller_image.value,
+    location: form.location.value,
+    description: form.description.value,
   };
+
+  // Create product into database
+  fetch("http://localhost:3000/products", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(productInfo),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to create product");
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      console.log("data after create:", data);
+
+      Swal.fire({
+        title: "Product Created!",
+        text: "Your product has been added successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
+      form.reset();
+    })
+    .catch((error) => {
+      console.log("Create product error:", error);
+
+      Swal.fire({
+        title: "Failed!",
+        text: "Something went wrong. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    });
+};
 
   return (
     <div className="min-h-screen bg-base-200 py-8 px-4">
       <div className="mx-auto max-w-4xl">
         
         {/* Header */}
+        <div className="flex justify-center items-center my-5">
+              <Link
+                to="/allProducts"
+                className="flex items-center gap-2 w-fit font-bold text-sm md:text-xl "
+              >
+                <ArrowLeft size={18}  />
+                <span>Back To Products</span>
+              </Link>
+            </div>
         <div className="mb-6 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold">
+          <h1 className="text-3xl md:text-4xl font-bold text-primary">
             Create New Product
           </h1>
 
