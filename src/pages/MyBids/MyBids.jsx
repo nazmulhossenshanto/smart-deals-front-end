@@ -9,8 +9,7 @@ const MyBids = () => {
     if (user?.email) {
       fetch(`http://localhost:3000/bids?email=${user?.email}`)
         .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
+        .then((data) => { 
           setBids(data);
         });
     }
@@ -32,15 +31,18 @@ const MyBids = () => {
     .then(res=> res.json())
     .then(data => {
       console.log('bid after delete', data);
-      setBids((prevBids)=>prevBids.filter(bid=> bid._id !== id))
-      // show alert
+       if (data.deletedCount === 1) {
+    setBids(prevBids =>
+      prevBids.filter(bid => bid._id !== id) 
+    );
+     // show alert
          Swal.fire({
     title: "Deleted!",
     text: "Your bid has been deleted.",
     icon: "success"
   });
   
-    })
+    }})
     .catch(error =>{
       console.log('delete bid error', error);
       Swal.fire({

@@ -1,16 +1,41 @@
 //import { Link } from "react-router";
 
+import { use } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 const Login = () => {
+  const {signInUser, signInWithGoogle} = use(AuthContext);
+  const handleLogin = (e)=>{
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    signInUser(email, password)
+    .then(result=>{
+      console.log(result.user);
+    })
+    .catch(error =>{
+      console.log('sign in error :', error);
+    })
+  };
+  const handleGoogleLogin = () => {
+  signInWithGoogle()
+    .then(result => {
+      console.log(result.user);
+    })
+    .catch(error => {
+      console.log("Google login error:", error);
+    });
+};
   return (
     <div>
       <div className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl mt-20">
         <h1 className="text-3xl font-bold text-center mt-5">Login Now!</h1>
         <div className="card-body">
-          <form className="fieldset">
+          <form onSubmit={handleLogin} className="fieldset">
             <label className="label">Email</label>
-            <input type="email" className="input" placeholder="Email" />
+            <input name="email" type="email" className="input" placeholder="Email" />
             <label className="label">Password</label>
-            <input type="password" className="input" placeholder="Password" />
+            <input name="password" type="password" className="input" placeholder="Password" />
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
@@ -18,7 +43,7 @@ const Login = () => {
           </form>
           <div className="divider">Or</div>
           {/* Google */}
-          <button className="btn bg-white text-black border-[#e5e5e5]">
+          <button  onClick={handleGoogleLogin} className="btn bg-white text-black border-[#e5e5e5]">
             <svg
               aria-label="Google logo"
               width="16"
