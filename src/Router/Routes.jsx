@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import MyBids from "../pages/MyBids/MyBids";
 import CreateProduct from "../pages/CreateProduct/CreateProduct";
+import MyProducts from "../pages/MyProducts/MyProducts";
 
 export const router = createBrowserRouter([
     {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/myProducts', 
-                element: <PrivateRoute><h1>my Product</h1></PrivateRoute>
+                element: <PrivateRoute><MyProducts></MyProducts></PrivateRoute>
             },
             {
                 path: '/productDetails/:id',

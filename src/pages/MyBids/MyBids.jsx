@@ -56,8 +56,8 @@ const MyBids = () => {
 });
   }
   return (
-    <div>
-      <h1 className="my-10 text-center text-4xl font-bold">
+    <div className="max-w-11/12 mx-auto shadow-2xl my-10 pt-5">
+      <h1 className="my-5 text-center text-4xl font-bold">
         MyBids : <span className="text-primary">{bids.length}</span>
       </h1>
       <div className="overflow-x-auto">
