@@ -1,8 +1,10 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import useAxios from "../../hooks/useAxios";
 
 const CreateProduct = () => {
+  const axiosInstance = useAxios();
  const handleCreateProduct = (e) => {
   e.preventDefault();
 
@@ -25,42 +27,58 @@ const CreateProduct = () => {
   };
 
   // Create product into database
-  fetch("http://localhost:3000/products", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(productInfo),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Failed to create product");
-      }
+  // fetch("http://localhost:3000/products", {
+  //   method: "POST",
+  //   headers: {
+  //     "content-type": "application/json",
+  //   },
+  //   body: JSON.stringify(productInfo),
+  // })
+  //   .then((res) => {
+  //     if (!res.ok) {
+  //       throw new Error("Failed to create product");
+  //     }
 
-      return res.json();
-    })
-    .then((data) => {
-      console.log("data after create:", data);
+  //     return res.json();
+  //   })
+  //   .then((data) => {
+  //     console.log("data after create:", data);
 
+  //     Swal.fire({
+  //       title: "Product Created!",
+  //       text: "Your product has been added successfully.",
+  //       icon: "success",
+  //       confirmButtonText: "OK",
+  //     });
+
+  //     form.reset();
+  //   })
+  //   .catch((error) => {
+  //     console.log("Create product error:", error);
+
+  //     Swal.fire({
+  //       title: "Failed!",
+  //       text: "Something went wrong. Please try again.",
+  //       icon: "error",
+  //       confirmButtonText: "OK",
+  //     });
+  //   });
+
+  // create product using axios
+  axiosInstance.post('/products', productInfo)
+  .then(data => {
+    console.log('product created using axios', data.data);
+    if(data.data.insertedId){
       Swal.fire({
         title: "Product Created!",
         text: "Your product has been added successfully.",
         icon: "success",
         confirmButtonText: "OK",
       });
+    }
+  })
 
-      form.reset();
-    })
-    .catch((error) => {
-      console.log("Create product error:", error);
 
-      Swal.fire({
-        title: "Failed!",
-        text: "Something went wrong. Please try again.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    });
 };
 
   return (
