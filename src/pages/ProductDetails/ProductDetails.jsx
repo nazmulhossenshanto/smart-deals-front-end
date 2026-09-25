@@ -52,25 +52,23 @@ const ProductDetails = () => {
       body: JSON.stringify(newBid),
     });
     const data = await res.json();
-    if(data.insertedId){
+    if (data.insertedId) {
       bidModalRef.current.close();
       // sweet alert
       Swal.fire({
-  title: "Successed!",
-  text: "Your bid has been placed.",
-  imageUrl: user?.photoURL,
-  imageWidth: 400,
-  imageHeight: 200,
-  imageAlt: user.displayName
-});
-newBid._id = data.inserteId;
-const newBids = [...bids, newBid];
-newBids.sort((a, b)=> a.bid_price - b.bid_price)
-setBids(newBids)
+        title: "Successed!",
+        text: "Your bid has been placed.",
+        imageUrl: user?.photoURL,
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: user.displayName,
+      });
+      newBid._id = data.inserteId;
+      const newBids = [...bids, newBid];
+      newBids.sort((a, b) => a.bid_price - b.bid_price);
+      setBids(newBids);
     }
     console.log(data);
-
-    
   };
 
   // fetch bids for this product
@@ -193,7 +191,7 @@ setBids(newBids)
                 <span className="font-semibold">Status:</span>
 
                 <span className="px-3 py-1 rounded-full bg-yellow-400 text-black text-xs">
-                  {status === "pending" ? "On Sale" : status}
+                  {status ? status : "pending"}
                 </span>
               </p>
             </div>
@@ -293,51 +291,51 @@ setBids(newBids)
         </h1>
         {/* bids for this product */}
 
-      <div className="overflow-x-auto">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th>
-          SL No.
-        </th>
-        <th>Buyer Name</th>
-        <th>Buyer Email</th>
-        <th>Bid Price</th>
-        <th>Actions</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* row 1 */}
-      {
-        bids.map((bid, index)=><tr key={bid._id}>
-        <th>
-          {index + 1}
-        </th>
-        <td>
-          <div className="flex items-center  gap-3">
-            <img className="h-10 w-10 rounded-full object-cover" src={bid?.buyer_image} alt="" />
-            <h1>{bid.buyer_name}</h1>
-          </div>
-        </td>
-        <td>
-          {bid?.buyer_email} 
-        </td>
-        <td>$ {bid.bid_price}</td>
-        <th >
-         <div className="flex gap-2">
-           <button className="btn  btn-outline btn-success btn-xs">Accept Offer</button>
-          <button className="btn  btn-outline btn-warning btn-xs">Reject Offer</button>
-         </div>
-        </th>
-      </tr>)
-      }
-    </tbody> 
-  </table>
-</div>
-
-
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>SL No.</th>
+                <th>Buyer Name</th>
+                <th>Buyer Email</th>
+                <th>Bid Price</th>
+                <th>Actions</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* row 1 */}
+              {bids.map((bid, index) => (
+                <tr key={bid._id}>
+                  <th>{index + 1}</th>
+                  <td>
+                    <div className="flex items-center  gap-3">
+                      <img
+                        className="h-10 w-10 rounded-full object-cover"
+                        src={bid?.buyer_image}
+                        alt=""
+                      />
+                      <h1>{bid.buyer_name}</h1>
+                    </div>
+                  </td>
+                  <td>{bid?.buyer_email}</td>
+                  <td>$ {bid.bid_price}</td>
+                  <th>
+                    <div className="flex gap-2">
+                      <button className="btn  btn-outline btn-success btn-xs">
+                        Accept Offer
+                      </button>
+                      <button className="btn  btn-outline btn-warning btn-xs">
+                        Reject Offer
+                      </button>
+                    </div>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+// import useAxios from "../../hooks/useAxios";
 
 const CreateProduct = () => {
-  const axiosInstance = useAxios();
+  // const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure()
  const handleCreateProduct = (e) => {
   e.preventDefault();
 
@@ -26,7 +28,8 @@ const CreateProduct = () => {
     description: form.description.value,
   };
 
-  // Create product into database
+//  const fetch = {
+ // Create product into database
   // fetch("http://localhost:3000/products", {
   //   method: "POST",
   //   headers: {
@@ -63,11 +66,13 @@ const CreateProduct = () => {
   //       confirmButtonText: "OK",
   //     });
   //   });
+// }
 
   // create product using axios
-  axiosInstance.post('/products', productInfo)
+  
+  axiosSecure.post('/products', productInfo)
   .then(data => {
-    console.log('product created using axios', data.data);
+    console.log('product created using axiosSecure', data.data);
     if(data.data.insertedId){
       Swal.fire({
         title: "Product Created!",

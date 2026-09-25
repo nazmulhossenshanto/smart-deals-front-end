@@ -91,7 +91,7 @@ const MyBids = () => {
                   </div>
                 </td>
                 <td>{bid?.buyer_email}</td>
-                <td>$ {bid.bid_price}</td>
+                <td>$ {bid?.bid_price}</td>
                 <td>
                   {" "}
                   <span className="badge badge-warning badge-sm rounded-full">

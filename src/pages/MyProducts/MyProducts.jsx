@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 const MyProducts = () => {
   const { user } = use(AuthContext);
   const [products, setProducts] = useState([]);
+  console.log(products);
   useEffect(() => {
     fetch(`http://localhost:3000/products?email=${user.email}`)
       .then((res) => {
@@ -23,7 +24,7 @@ const MyProducts = () => {
   return (
     <div className="max-w-11/12 mx-auto shadow-2xl my-10 pt-5">
       <h1 className="my-5 text-center text-4xl font-bold">
-        MyBids : <span className="text-primary">{products?.length}</span>
+        MyProducts : <span className="text-primary">{products?.length}</span>
       </h1>
       <div className="overflow-x-auto">
         <table className="table">
@@ -53,12 +54,12 @@ const MyProducts = () => {
                     <h1>{product.title}</h1>
                   </div>
                 </td>
-                <td>{products?.category}</td>
-                <td>$ {products?.price}</td>
+                <td>{product?.category}</td>
+                <td>$ {product?.price_min}</td>
                 <td>
                   {" "}
                   <span className="badge badge-warning badge-sm rounded-full">
-                    {products?.status}
+                    {product.status || 'pending'}
                   </span>
                 </td>
                 <th>
