@@ -6,7 +6,9 @@ const MyProducts = () => {
   const [products, setProducts] = useState([]);
   console.log(products);
   useEffect(() => {
-    fetch(`http://localhost:3000/products?email=${user.email}`)
+    fetch(
+      `https://smart-deals-server-wine.vercel.app/products?email=${user.email}`,
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error("Could not fetch products");

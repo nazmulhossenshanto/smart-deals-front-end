@@ -44,7 +44,7 @@ const ProductDetails = () => {
       contact_info: contactInfo,
       status: "pending",
     };
-    const res = await fetch("http://localhost:3000/bids", {
+    const res = await fetch("https://smart-deals-server-wine.vercel.app/bids", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -73,7 +73,7 @@ const ProductDetails = () => {
 
   // fetch bids for this product
   useEffect(() => {
-    fetch(`http://localhost:3000/products/bids/${_id}`)
+    fetch(`https://smart-deals-server-wine.vercel.app/products/bids/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

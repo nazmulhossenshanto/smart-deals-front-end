@@ -4,7 +4,9 @@ import LatestProducts from "../components/LatestProducts/LatestProducts"
 
  
 const Home = () => {
-  const  latestProductsPromise = fetch('http://localhost:3000/latest-products').then(res=>res.json())
+  const latestProductsPromise = fetch(
+    "https://smart-deals-server-wine.vercel.app/latest-products",
+  ).then((res) => res.json());
   return (
     <div>
       {/*  */}

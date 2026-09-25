@@ -7,14 +7,17 @@ const MyBids = () => {
   const [bids, setBids] = useState([]);
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/bids?email=${user?.email}`, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
+      fetch(
+        `https://smart-deals-server-wine.vercel.app/bids?email=${user?.email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
         },
-      })
+      )
         .then((res) => res.json())
         .then((data) => {
-          console.log('from bids page', data);
+          console.log("from bids page", data);
           setBids(data);
         });
     }
@@ -30,7 +33,7 @@ const MyBids = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/bids/${id}`, {
+        fetch(`https://smart-deals-server-wine.vercel.app/bids/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

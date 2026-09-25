@@ -8,83 +8,80 @@ const CreateProduct = () => {
   // const axiosInstance = useAxios();
   const axiosSecure = useAxiosSecure()
  const handleCreateProduct = (e) => {
-  e.preventDefault();
+   e.preventDefault();
 
-  const form = e.target;
+   const form = e.target;
 
-  const productInfo = {
-    title: form.title.value,
-    category: form.category.value,
+   const productInfo = {
+     title: form.title.value,
+     category: form.category.value,
      email: form.seller_email.value,
-    price_min: Number(form.price_min.value),
-    price_max: Number(form.price_max.value),
-    condition: form.condition.value,
-    usage: form.usage.value,
-    image: form.image.value,
-    seller_name: form.seller_name.value,
-    seller_contact: form.seller_contact.value,
-    seller_image: form.seller_image.value,
-    location: form.location.value,
-    description: form.description.value,
-  };
+     price_min: Number(form.price_min.value),
+     price_max: Number(form.price_max.value),
+     condition: form.condition.value,
+     usage: form.usage.value,
+     image: form.image.value,
+     seller_name: form.seller_name.value,
+     seller_contact: form.seller_contact.value,
+     seller_image: form.seller_image.value,
+     location: form.location.value,
+     description: form.description.value,
+   };
 
-//  const fetch = {
- // Create product into database
-  // fetch("http://localhost:3000/products", {
-  //   method: "POST",
-  //   headers: {
-  //     "content-type": "application/json",
-  //   },
-  //   body: JSON.stringify(productInfo),
-  // })
-  //   .then((res) => {
-  //     if (!res.ok) {
-  //       throw new Error("Failed to create product");
-  //     }
+   //  const fetch = {
+   // Create product into database
+   // fetch("https://smart-deals-server-wine.vercel.app/products", {
+   //   method: "POST",
+   //   headers: {
+   //     "content-type": "application/json",
+   //   },
+   //   body: JSON.stringify(productInfo),
+   // })
+   //   .then((res) => {
+   //     if (!res.ok) {
+   //       throw new Error("Failed to create product");
+   //     }
 
-  //     return res.json();
-  //   })
-  //   .then((data) => {
-  //     console.log("data after create:", data);
+   //     return res.json();
+   //   })
+   //   .then((data) => {
+   //     console.log("data after create:", data);
 
-  //     Swal.fire({
-  //       title: "Product Created!",
-  //       text: "Your product has been added successfully.",
-  //       icon: "success",
-  //       confirmButtonText: "OK",
-  //     });
+   //     Swal.fire({
+   //       title: "Product Created!",
+   //       text: "Your product has been added successfully.",
+   //       icon: "success",
+   //       confirmButtonText: "OK",
+   //     });
 
-  //     form.reset();
-  //   })
-  //   .catch((error) => {
-  //     console.log("Create product error:", error);
+   //     form.reset();
+   //   })
+   //   .catch((error) => {
+   //     console.log("Create product error:", error);
 
-  //     Swal.fire({
-  //       title: "Failed!",
-  //       text: "Something went wrong. Please try again.",
-  //       icon: "error",
-  //       confirmButtonText: "OK",
-  //     });
-  //   });
-// }
+   //     Swal.fire({
+   //       title: "Failed!",
+   //       text: "Something went wrong. Please try again.",
+   //       icon: "error",
+   //       confirmButtonText: "OK",
+   //     });
+   //   });
+   // }
 
-  // create product using axios
-  
-  axiosSecure.post('/products', productInfo)
-  .then(data => {
-    console.log('product created using axiosSecure', data.data);
-    if(data.data.insertedId){
-      Swal.fire({
-        title: "Product Created!",
-        text: "Your product has been added successfully.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-    }
-  })
+   // create product using axios
 
-
-};
+   axiosSecure.post("/products", productInfo).then((data) => {
+     console.log("product created using axiosSecure", data.data);
+     if (data.data.insertedId) {
+       Swal.fire({
+         title: "Product Created!",
+         text: "Your product has been added successfully.",
+         icon: "success",
+         confirmButtonText: "OK",
+       });
+     }
+   });
+ };
 
   return (
     <div className="min-h-screen bg-base-200 py-8 px-4">

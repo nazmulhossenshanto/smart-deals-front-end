@@ -4,68 +4,71 @@ import { AuthContext } from "../context/AuthContext"
  
 const Register = () => {
   const {createUser, signInWithGoogle} = use(AuthContext);
-  const handleGoogleSignIn = () =>{
-
+  const handleGoogleSignIn = () => {
     signInWithGoogle()
-    .then(async (result) =>{
-      const firebaseUser = result.user;
-      console.log(firebaseUser);
-      const userInfo = {
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        name: firebaseUser.displayName,
-        photoURL: firebaseUser.photoURL,
-        role : 'buyer',
-        createdAt : new Date()
-      };
-      // crate user into mongo db
-      const res = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(userInfo)
+      .then(async (result) => {
+        const firebaseUser = result.user;
+        console.log(firebaseUser);
+        const userInfo = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+          role: "buyer",
+          createdAt: new Date(),
+        };
+        // crate user into mongo db
+        const res = await fetch(
+          "https://smart-deals-server-wine.vercel.app/users",
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(userInfo),
+          },
+        );
+        const mongoDBUser = await res.json();
+        console.log("mongo db user : ", mongoDBUser);
+      })
+      .catch((error) => {
+        console.log("google register user error", error);
       });
-      const mongoDBUser = await res.json();
-      console.log('mongo db user : ', mongoDBUser);
-    })
-    .catch(error=>{
-      console.log( 'google register user error',error);
-    })
-
-    
-  }
-   const handleRegister = async(e)=>{
-    e.preventDefault(); 
+  };
+  const handleRegister = async (e) => {
+    e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUser(email, password)
-    .then(async (result) =>{
-      const firebaseUser = result.user;
-      console.log(firebaseUser);
-      const userInfo = {
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        name: firebaseUser.displayName,
-        photoURL: firebaseUser.photoURL,
-        role : 'buyer',
-        createdAt : new Date()
-      };
-      // crate user into mongo db
-      const res = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(userInfo)
+      .then(async (result) => {
+        const firebaseUser = result.user;
+        console.log(firebaseUser);
+        const userInfo = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+          role: "buyer",
+          createdAt: new Date(),
+        };
+        // crate user into mongo db
+        const res = await fetch(
+          "https://smart-deals-server-wine.vercel.app/users",
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(userInfo),
+          },
+        );
+        const mongoDBUser = await res.json();
+        console.log("mongo db user : ", mongoDBUser);
+      })
+      .catch((error) => {
+        console.log("register user error", error);
       });
-      const mongoDBUser = await res.json();
-      console.log('mongo db user : ', mongoDBUser);
-    })
-    .catch(error=>{
-      console.log( 'register user error',error);
-    })
-   }
+  };
   return (
     <div className="mt-20">
       <div className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl">
